@@ -1,4 +1,4 @@
-module github.com/ExEiS09/hw01_hello_otus
+module github.com/ExEiS09/golang-otus/hw01_hello_otus
 
 go 1.19
 
