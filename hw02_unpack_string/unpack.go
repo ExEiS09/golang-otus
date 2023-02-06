@@ -9,7 +9,6 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
-
 	previousChar := ""
 	var isChar bool
 	var w strings.Builder
@@ -25,10 +24,9 @@ func Unpack(input string) (string, error) {
 		if i, err := strconv.Atoi(current); err == nil {
 			if !isChar {
 				return "", ErrInvalidString
-			} else {
-				w.WriteString(strings.Repeat(previousChar, i))
-				isChar = false
 			}
+			w.WriteString(strings.Repeat(previousChar, i))
+			isChar = false
 		} else {
 			if previousChar == "" {
 				previousChar = current
