@@ -17,8 +17,7 @@ func Unpack(input string) (string, error) {
 	currentCount := 1
 	previousIsNumber := true
 
-	symbols := []rune(input)
-	for _, symbol := range symbols {
+	for _, symbol := range input {
 		number, err := strconv.Atoi(string(symbol))
 		if err == nil { // is number
 			if previousIsNumber {
@@ -37,7 +36,7 @@ func Unpack(input string) (string, error) {
 			previousIsNumber = false
 		}
 	}
-	if !previousIsNumber {
+	for i := 0; i < currentCount; i++ {
 		b.WriteRune(currentSymbol)
 	}
 	return b.String(), nil
