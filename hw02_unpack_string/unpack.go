@@ -9,34 +9,36 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
-	previousChar := ""
-	var isChar bool
-	var w strings.Builder
+	var b strings.Builder
 
-	for _, r := range input {
-		current := string(r)
-		if current == "" {
-			return "", nil
-		}
-		if _, err := strconv.Atoi(current); err == nil && previousChar == "" {
-			return "", ErrInvalidString
-		}
-		if i, err := strconv.Atoi(current); err == nil {
-			if !isChar {
+	emptyRune := rune(0)
+
+	currentSymbol := emptyRune
+	currentCount := 1
+	previousIsNumber := true
+
+	symbols := []rune(input)
+	for _, symbol := range symbols {
+		number, err := strconv.Atoi(string(symbol))
+		if err == nil { // is number
+			if previousIsNumber {
 				return "", ErrInvalidString
 			}
-			w.WriteString(strings.Repeat(previousChar, i))
-			isChar = false
-		} else {
-			if previousChar == "" {
-				previousChar = current
-			} else if isChar {
-				w.WriteString(previousChar)
+			currentCount = number
+			previousIsNumber = true
+		} else { // !number
+			if currentSymbol != emptyRune {
+				for i := 0; i < currentCount; i++ {
+					b.WriteRune(currentSymbol)
+				}
 			}
-			previousChar = current
-			isChar = true
+			currentSymbol = symbol
+			currentCount = 1
+			previousIsNumber = false
 		}
 	}
-	w.WriteString(previousChar)
-	return w.String(), nil
+	if !previousIsNumber {
+		b.WriteRune(currentSymbol)
+	}
+	return b.String(), nil
 }
