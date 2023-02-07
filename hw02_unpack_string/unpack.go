@@ -9,6 +9,7 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
+
 	var b strings.Builder
 
 	emptyRune := rune(0)
@@ -16,6 +17,10 @@ func Unpack(input string) (string, error) {
 	currentSymbol := emptyRune
 	currentCount := 1
 	previousIsNumber := true
+
+	if len(input) == 0 {
+		return "", nil
+	}
 
 	for _, symbol := range input {
 		number, err := strconv.Atoi(string(symbol))
